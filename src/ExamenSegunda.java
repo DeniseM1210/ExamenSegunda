@@ -84,6 +84,69 @@ class FloydWarshall{
         } 
     }
 }
+
+class BellmanFord { 
+	//Referencia: “Bellman–Ford Algorithm | DP-23 - GeeksforGeeks.” GeeksforGeeks, Dec. 2012, www.geeksforgeeks.org/bellman-ford-algorithm-dp-23/.
+
+    class Edge { 
+        int src, dest, weight; 
+        Edge() 
+        { 
+            src = dest = weight = 0; 
+        } 
+    }; 
+  
+    int V, E; 
+    Edge edge[]; 
+  
+    // Crea un grafico con vertices y aristas
+    BellmanFord(int v, int e) 
+    { 
+        V = v; 
+        E = e; 
+        edge = new Edge[e]; 
+        for (int i = 0; i < e; ++i) 
+            edge[i] = new Edge(); 
+    } 
+   
+    void BellmanFord(BellmanFord graph, int src) 
+    { 
+        int V = graph.V, E = graph.E; 
+        int dist[] = new int[V]; 
+  
+        for (int i = 0; i < V; ++i) 
+            dist[i] = Integer.MAX_VALUE; 
+        dist[src] = 0; 
+  
+        for (int i = 1; i < V; ++i) { 
+            for (int j = 0; j < E; ++j) { 
+                int u = graph.edge[j].src; 
+                int v = graph.edge[j].dest; 
+                int weight = graph.edge[j].weight; 
+                if (dist[u] != Integer.MAX_VALUE && dist[u] + weight < dist[v]) 
+                    dist[v] = dist[u] + weight; 
+            } 
+        } 
+   
+        for (int j = 0; j < E; ++j) { 
+            int u = graph.edge[j].src; 
+            int v = graph.edge[j].dest; 
+            int weight = graph.edge[j].weight; 
+            if (dist[u] != Integer.MAX_VALUE && dist[u] + weight < dist[v]) { 
+                System.out.println("Contiene tamaño negativo"); 
+                return; 
+            } 
+        } 
+        printArr(dist, V); 
+    } 
+  
+    void printArr(int dist[], int V) 
+    { 
+        System.out.println("Distancia del vertice desde la fuente"); 
+        for (int i = 0; i < V; ++i) 
+            System.out.println(i + "\t\t" + dist[i]); 
+    } 
+}
 public class ExamenSegunda {
 
 	public static void main(String[] args) {
@@ -128,13 +191,59 @@ public class ExamenSegunda {
 				int graph[][] = { {0,   5,  fw.INF, 10}, 
                     {fw.INF, 0,   3, fw.INF}, 
                     {fw.INF, fw.INF, 0,   1}, 
-                    {fw.INF, fw.INF, fw.INF, 0} 
-                  };
+                    {fw.INF, fw.INF, fw.INF, 0} };
 					
-
-					// Print the solution 
+					// Se imprime la solución
 					fw.floydWarshall(graph);
 			break;
+			case 3: int V = 5; // Numero de vertices 
+	        int E = 8; // Numero de aristas 
+	        
+	        BellmanFord graph2 = new BellmanFord(V, E); 
+	  
+	        // arista 0-1 
+	        graph2.edge[0].src = 0; 
+	        graph2.edge[0].dest = 1; 
+	        graph2.edge[0].weight = -1; 
+	  
+	        // arista 0-2  
+	        graph2.edge[1].src = 0; 
+	        graph2.edge[1].dest = 2; 
+	        graph2.edge[1].weight = 4; 
+	  
+	        // arista 1-2  
+	        graph2.edge[2].src = 1; 
+	        graph2.edge[2].dest = 2; 
+	        graph2.edge[2].weight = 3; 
+	  
+	        // arista 1-3  
+	        graph2.edge[3].src = 1; 
+	        graph2.edge[3].dest = 3; 
+	        graph2.edge[3].weight = 2; 
+	  
+	        // arista 1-4  
+	        graph2.edge[4].src = 1; 
+	        graph2.edge[4].dest = 4; 
+	        graph2.edge[4].weight = 2; 
+	  
+	        // arista 3-2
+	        graph2.edge[5].src = 3; 
+	        graph2.edge[5].dest = 2; 
+	        graph2.edge[5].weight = 5; 
+	  
+	        // arista 3-1  
+	        graph2.edge[6].src = 3; 
+	        graph2.edge[6].dest = 1; 
+	        graph2.edge[6].weight = 1; 
+	  
+	        // arista 4-3
+	        graph2.edge[7].src = 4; 
+	        graph2.edge[7].dest = 3; 
+	        graph2.edge[7].weight = -3; 
+	  
+	        graph2.BellmanFord(graph2, 0); 
+	        break;
+			case 4: break;
 
 		}//switch
 			
